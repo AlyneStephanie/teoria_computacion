@@ -1,0 +1,5 @@
+*.aux
+*.gz
+*.log
+*.docx
+*.pyc
