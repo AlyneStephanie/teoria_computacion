@@ -1,20 +1,65 @@
-# echo-server.py
-
 import socket
 
-HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
-PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+def main():
+    # Genera un socket con los valores por default
+    my_socket = socket.socket()
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind((HOST, PORT))
-    s.listen()
-    conn, addr = s.accept()
-    with conn:
-        print(f"Connected by {addr}")
+    # Ahora establezco la conexión con el método bind, el cual recibe una tupla con dos valores: 1.- host, 2.- en qué puerto estará escuchando el socket
+    my_socket.bind(('localhost', 8000))
+
+    # Ahora establezco la cantidad de peticiones que puede manejar en cola nuestro socket
+    my_socket.listen(1)
+
+    # Una vez establecida la conexión y que hayamos definido la cantidad de conexiones que puedan estar en cola, se establece un ciclo infinito
+    while True:
+        # Dentro de este ciclo, vamos a aceptar las peticiones de los clientes
+        # Esta línea nos va a retornar dos valores: 1.- conexión, 2.- dirección
+        connection_cl, addr = my_socket.accept()
+        print("Nueva conexión establecida")
+        # Imprimimos la dirección de la cual se ha hecho la petición
+        print(addr)
+        odds = []
+        even = []
+
+        # Tenemos que enviar un montón de peticiones por cada conexión
         while True:
-            data = conn.recv(1024)
-            ctrl = data[0]
-            if not data:
+            # Podemos obtener lo que el cliente nos está enviando
+            request_str = str(connection_cl.recv(1024), encoding='utf-8')
+            
+            print(request_str[0])
+            if request_str[0] == "2":
+                # Ahora cerramos la conexión con el cliente
+                print(odds)
+                print(even)
+                connection_cl.close()
                 break
-            conn.sendall(bytes(f"Sent: {data}", 'ascii'))
+            if request_str[0] == "3":
+                s = request_str[1:]
+                if is_even(s):
+                    even.append(s)
+                else:
+                    odds.append(s)
+
+
+            # lista = request_str.split(",")
+            # lista.pop()
+
+
+            # final_str = even_odd(lista)
+
+            # print(final_str)
+
+            # Una vez con la petición, enviamos un mensaje al cliente:
+
+            connection_cl.send(bytes("3", encoding='utf-8'))
+
+        
+
+    # Si corremos ahora el servidor, no ocurrirá nada, lo que significa que el servidor está a la espera. Ahora, lo que debemos hacer es generar el cliente.
+
+def is_even(s):
+    return  s.count('1') % 2 == 0
+
+
+if __name__ == "__main__":
+    main()
