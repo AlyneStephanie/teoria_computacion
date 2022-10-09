@@ -7,12 +7,12 @@ from common import *
 def make_list():
 
     # Deben ser 64 caracteres
-    largo_cadena = 4
+    str_size = STR_SIZE
     # Deben ser 1_000_000 de cadenas
-    num_cadenas = 10
+    num_strs = NUM_STRS
 
-    for i in range(num_cadenas):
-       s = bin(random.randint(0, (2**largo_cadena) - 1))[2:].zfill(largo_cadena)
+    for i in range(num_strs):
+       s = bin(random.randint(0, (2**str_size) - 1))[2:].zfill(str_size)
        yield str(s)
 
 
