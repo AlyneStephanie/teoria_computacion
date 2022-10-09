@@ -1,4 +1,5 @@
 import socket
+import time
 from common import *
 
 
@@ -9,6 +10,7 @@ def process_conn(conn):
     while True:
         # Podemos obtener lo que el cliente nos está enviando
         request_str = str(conn.recv(BUFFER_SIZE), encoding=ENCODING)
+        time.sleep(DELAY_SECONDS)
 
         if request_str[0] == CODE_RECV_RM_STR_END:
             print(even)
@@ -36,21 +38,22 @@ def process_conn(conn):
 
             conn.send(bytes(CODE_SEND_RESP_PROCESSED_END, encoding=ENCODING))   
 
-            # Ahora cerramos la conexión con el cliente
-            conn.close()
-
-            break
-
         if request_str[0] == CODE_RECV_RM_STR:
             s = request_str[1:]
             if is_even(s):
                 even.append(s)
             else:
                 odds.append(s)
+            conn.send(bytes(CODE_RECV_RM_STR, encoding=ENCODING))
+
+        if request_str[0] == "6":
+            # Ahora cerramos la conexión con el cliente
+            conn.close()
+            break
 
         # Una vez con la petición, enviamos un mensaje al cliente:
 
-        conn.send(bytes(CODE_RECV_RM_STR, encoding=ENCODING))
+       
     
 
 def main():
