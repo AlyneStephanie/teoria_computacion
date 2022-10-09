@@ -25,29 +25,42 @@ def main():
         while True:
             # Podemos obtener lo que el cliente nos está enviando
             request_str = str(connection_cl.recv(1024), encoding='utf-8')
-            
-            print(request_str[0])
+
             if request_str[0] == "2":
-                # Ahora cerramos la conexión con el cliente
-                print(odds)
                 print(even)
+                print(odds)
+                
+                for e in even:
+                    connection_cl.send(bytes(f"4e{e}", encoding='utf-8'))
+                    resp = str(connection_cl.recv(1024), encoding='utf-8')
+                    if resp[0] == "4":
+                        continue
+                    else:
+                        print(f"Error: código no esperado {resp[0]}")
+                        break
+
+                for o in odds:
+                    connection_cl.send(bytes(f"4o{o}", encoding='utf-8'))
+                    resp = str(connection_cl.recv(1024), encoding='utf-8')
+                    if resp[0] == "4":
+                        continue
+                    else:
+                        print(f"Error: código no esperado {resp[0]}")
+                        break
+
+                connection_cl.send(bytes(f"5_end", encoding='utf-8'))   
+
+                # Ahora cerramos la conexión con el cliente
                 connection_cl.close()
+
                 break
+
             if request_str[0] == "3":
                 s = request_str[1:]
                 if is_even(s):
                     even.append(s)
                 else:
                     odds.append(s)
-
-
-            # lista = request_str.split(",")
-            # lista.pop()
-
-
-            # final_str = even_odd(lista)
-
-            # print(final_str)
 
             # Una vez con la petición, enviamos un mensaje al cliente:
 

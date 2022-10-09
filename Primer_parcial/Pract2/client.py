@@ -5,27 +5,39 @@ import random
 
 def main():
     # Generamos un nuevo objeto
-    mi_socket = socket.socket()
+    my_socket = socket.socket()
 
     # Hacemos la conexión
     # connect() va a recibir una tupla, y esta tupla va a contener dos valores: 1.- la dirección a la que nos tenemos que conectar, 2.- el puerto al que nos vamos a conectar. En el servidor establecimos el 8000
-    mi_socket.connect(('localhost', 8000))
+    my_socket.connect(('localhost', 8000))
 
     # lista = 
 
     # Ahora enviaremos un mensaje
     for s in make_list():
-        print(s)
-        mi_socket.send(bytes('3' + s, encoding='utf-8'))
-        respuesta = str(mi_socket.recv(1024), encoding='utf-8')
-        print(respuesta)
+        my_socket.send(bytes('3' + s, encoding='utf-8'))
+        # Ahora vamos a recibir lo que el servidor nos responda. Para esto vamos a utilizar el método recv, y vamos a colocar 1024, lo cual hace referencia al bufer; es decir, 1024 bytes
+        response_serv = str(my_socket.recv(1024), encoding='utf-8')
 
-    mi_socket.send(bytes("2", encoding='utf-8'))
+    my_socket.send(bytes('2', encoding='utf-8'))
 
-    # Ahora vamos a recibir lo que el servidor nos responda. Para esto vamos a utilizar el método recv, y vamos a colocar 1024, lo cual hace referencia al bufer; es decir, 1024 bytes
+    while True:
+        resp = str(my_socket.recv(1024), encoding='utf-8')
+        if len(resp) > 0:
+            code = resp[0]
+
+            if code == '4':
+                s = resp[1:]
+                my_socket.send(bytes("4", encoding='utf-8'))
+
+            if code == '5':
+                # Cerramos la conexión
+                my_socket.close()
+                break
+
     
 
-    # lists = respuesta.split("-")
+    # lists = response_serv.split("-")
     # even = lists[0].split(",")
     # odd = lists[1].split(",")
     
@@ -35,16 +47,13 @@ def main():
     # print(even)
     # print(odd)
 
-    # print(respuesta)
+    # print(response_serv)
     
 
-    # Cerramos la conexión
-    mi_socket.close()
 
 
 def make_list():
 
-    lista_str = ""
     # Deben ser 64 caracteres
     largo_cadena = 4
     # Deben ser 1_000_000 de cadenas
@@ -54,9 +63,6 @@ def make_list():
        s = bin(random.randint(0, (2**largo_cadena) - 1))[2:].zfill(largo_cadena)
        yield str(s)
 
-    # print(lista_str)
-
-    # return lista_str
 
 
 if __name__ == "__main__":
