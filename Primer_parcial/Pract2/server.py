@@ -12,48 +12,67 @@ def process_conn(conn):
         request_str = str(conn.recv(BUFFER_SIZE), encoding=ENCODING)
         time.sleep(DELAY_SECONDS)
 
-        if request_str[0] == CODE_RECV_RM_STR_END:
-            print(even)
-            print(odds)
-            code = None
-            for e in even:
-                conn.send(bytes(f"{CODE_SEND_RESP_PROCESSED}e{e}", encoding=ENCODING))
-                resp = str(conn.recv(BUFFER_SIZE), encoding=ENCODING)
-                code = resp[0]
-                if code == CODE_SEND_RESP_PROCESSED:
-                    continue
+        code = request_str[0]
+
+        match code:
+
+            case '2':
+                print(even)
+                print(odds)
+                code_resp = None
+                for e in even:
+                    conn.send(bytes(f"{CODE_SEND_RESP_PROCESSED}e{e}", encoding=ENCODING))
+                    resp = str(conn.recv(BUFFER_SIZE), encoding=ENCODING)
+                    code_resp = resp[0]
+                    if code_resp == CODE_SEND_RESP_PROCESSED:
+                        continue
+                    else:
+                        print(f"Error: código no esperado {code_resp}")
+                        break
+
+                for o in odds:
+                    conn.send(bytes(f"{CODE_SEND_RESP_PROCESSED}o{o}", encoding=ENCODING))
+                    resp = str(conn.recv(BUFFER_SIZE), encoding=ENCODING)
+                    code_resp = resp[0]
+                    if code_resp == CODE_SEND_RESP_PROCESSED:
+                        continue
+                    else:
+                        print(f"Error: código no esperado {code_resp}")
+                        break
+
+                conn.send(bytes(CODE_SEND_RESP_PROCESSED_END, encoding=ENCODING))   
+
+            case '3':
+                s = request_str[1:]
+                if is_even(s):
+                    even.append(s)
                 else:
-                    print(f"Error: código no esperado {code}")
-                    break
+                    odds.append(s)
+                conn.send(bytes(CODE_RECV_RM_STR, encoding=ENCODING))
 
-            for o in odds:
-                conn.send(bytes(f"{CODE_SEND_RESP_PROCESSED}o{o}", encoding=ENCODING))
-                resp = str(conn.recv(BUFFER_SIZE), encoding=ENCODING)
-                code = resp[0]
-                if code == CODE_SEND_RESP_PROCESSED:
-                    continue
-                else:
-                    print(f"Error: código no esperado {code}")
-                    break
+            case '6':
+                # Ahora cerramos la conexión con el cliente
+                conn.close()
+                break
 
-            conn.send(bytes(CODE_SEND_RESP_PROCESSED_END, encoding=ENCODING))   
 
-        if request_str[0] == CODE_RECV_RM_STR:
-            s = request_str[1:]
-            if is_even(s):
-                even.append(s)
-            else:
-                odds.append(s)
-            conn.send(bytes(CODE_RECV_RM_STR, encoding=ENCODING))
+def is_even(s):
 
-        if request_str[0] == "6":
-            # Ahora cerramos la conexión con el cliente
-            conn.close()
-            break
+    # SHORT VERSION
+    # return  s.count('1') % 2 == 0
 
-        # Una vez con la petición, enviamos un mensaje al cliente:
-
-       
+    # LONG VERSION
+    ones = 0
+    for i in range(len(s)):
+        if s[i] == '1':
+            ones += 1
+    var = ones % 2
+    match var:
+        case 0:
+            return True
+        case 1:
+            return False
+        
     
 
 def main():
@@ -76,9 +95,6 @@ def main():
         print(addr)
         process_conn(conn)
  
-
-def is_even(s):
-    return  s.count('1') % 2 == 0
 
 
 if __name__ == "__main__":
