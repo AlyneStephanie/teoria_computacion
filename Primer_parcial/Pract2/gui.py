@@ -9,29 +9,24 @@ import matplotlib.pyplot as plt
 import matplotlib.animation
 # Libería para hace updates parciales en lugar de redibujar todo
 from functools import partial
+import common
 
 # Creamos el grafo
 G = nx.Graph()
 
-# La ruta
-path = []
-
-# Switch para saber si la animación ya acabó
-finished = False
-
 # Agregamos las aristas con sus pesos
 
-map_labels = {'2': "Enviando datos al servidor",
-    '3': "Datos recibidos",
-    '4': "Enviando respuesta al cliente",
-    '5': "Enviando datos al servidor",
-    '6': "Envío finalizado"
+map_labels = {common.CODE_RECV_RM_STR: "Enviando datos al servidor",
+    common.CODE_RECV_RM_STR_END: "Datos recibidos",
+    common.CODE_SEND_RESP_PROCESSED: "Enviando respuesta al cliente",
+    common.CODE_SEND_RESP_PROCESSED_END: "Enviando datos al servidor",
+    common.CODE_END: "Envío finalizado"
 }
-G.add_edge('3', '2')
-G.add_edge('2', '4')
-G.add_edge('4', '5')
-G.add_edge('5', '3')
-G.add_edge('5', '6')
+G.add_edge(common.CODE_RECV_RM_STR, common.CODE_RECV_RM_STR_END)
+G.add_edge(common.CODE_RECV_RM_STR_END, common.CODE_SEND_RESP_PROCESSED)
+G.add_edge(common.CODE_SEND_RESP_PROCESSED, common.CODE_SEND_RESP_PROCESSED_END)
+G.add_edge(common.CODE_SEND_RESP_PROCESSED_END, common.CODE_RECV_RM_STR)
+G.add_edge(common.CODE_SEND_RESP_PROCESSED_END, common.CODE_END)
 
 # Esquema para imprimir el grafo en matplotlib
 pos = nx.nx_pydot.graphviz_layout(G, prog="dot")
@@ -49,11 +44,6 @@ def start_animation(curr):
         # G => Grafo
         # pos => posición de todos los elementos del grafo
         # ax => Donde se imprime la animación
-        # Usamos variables globales
-        global path
-        global finished
-        if finished:
-            return
         if i > 0:
             color_map = []
             # Para iluminar el nodo actual
@@ -73,7 +63,6 @@ def start_animation(curr):
     nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5, ax=ax)
 
     # Dibujamos los nombres de los nodos
-    # nx.draw_networkx_labels(G, pos, labels={n: n.name for n in G})
     nx.draw_networkx_labels(G, pos, labels={n: map_labels[n] for n in G})
 
     # Dibujamos los nombres de las aristas
@@ -82,16 +71,8 @@ def start_animation(curr):
         font_color='red'
     )
 
-
-    # Construimos el generador para poder animar en cada iteración
-    # generator = temp()
-
     # Ejecutamos la animación
-    ani = matplotlib.animation.FuncAnimation(fig, upd, repeat=True, interval=0.5, frames=10)
-
-
-    mng = plt.get_current_fig_manager()
-    # mng.full_screen_toggle()
+    ani = matplotlib.animation.FuncAnimation(fig, upd, repeat=True, interval=1, frames=10)
 
     plt.ion()
     plt.show()

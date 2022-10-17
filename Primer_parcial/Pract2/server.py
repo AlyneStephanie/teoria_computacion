@@ -42,7 +42,7 @@ def process_conn(conn):
 
                 conn.send(bytes(CODE_SEND_RESP_PROCESSED_END, encoding=ENCODING))   
 
-            case '3':
+            case common.CODE_RECV_RM_STR:
                 s = request_str[1:]
                 if is_even(s):
                     even.append(s)
@@ -50,7 +50,7 @@ def process_conn(conn):
                     odds.append(s)
                 conn.send(bytes(CODE_RECV_RM_STR, encoding=ENCODING))
 
-            case '6':
+            case common.CODE_END:
                 # Ahora cerramos la conexión con el cliente
                 conn.close()
                 break
