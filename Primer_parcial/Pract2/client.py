@@ -22,7 +22,7 @@ def sorting(s):
             odds.append(s[i][1:])
     return even, odds
 
-curr = ['3']
+curr = [CODE_RECV_RM_STR]
 
 def main():
 
