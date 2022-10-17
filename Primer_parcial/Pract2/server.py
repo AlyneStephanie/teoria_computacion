@@ -1,6 +1,7 @@
 import socket
-import time
 from common import *
+import common
+from automata import is_even
 
 
 def process_conn(conn):
@@ -10,13 +11,12 @@ def process_conn(conn):
     while True:
         # Podemos obtener lo que el cliente nos está enviando
         request_str = str(conn.recv(BUFFER_SIZE), encoding=ENCODING)
-        time.sleep(DELAY_SECONDS)
 
         code = request_str[0]
 
         match code:
 
-            case '2':
+            case common.CODE_RECV_RM_STR_END:
                 print(even)
                 print(odds)
                 code_resp = None
@@ -55,25 +55,6 @@ def process_conn(conn):
                 conn.close()
                 break
 
-
-def is_even(s):
-
-    # SHORT VERSION
-    # return  s.count('1') % 2 == 0
-
-    # LONG VERSION
-    ones = 0
-    for i in range(len(s)):
-        if s[i] == '1':
-            ones += 1
-    var = ones % 2
-    match var:
-        case 0:
-            return True
-        case 1:
-            return False
-        
-    
 
 def main():
     # Genera un socket con los valores por default

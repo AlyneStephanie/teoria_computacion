@@ -2,6 +2,8 @@
 import socket
 import random
 from common import *
+import gui
+import time
 
 
 def make_list():
@@ -20,14 +22,17 @@ def sorting(s):
             odds.append(s[i][1:])
     return even, odds
 
+curr = ['3']
 
 def main():
-    # Generamos un nuevo objeto
+
+    # Generamos un nuevo objeto socket
     client = socket.socket()
 
     # Hacemos la conexión
     # connect() va a recibir una tupla, y esta tupla va a contener dos valores: 1.- la dirección a la que nos tenemos que conectar, 2.- el puerto al que nos vamos a conectar. En el servidor establecimos el 8000
     client.connect(('localhost', 8000))
+    
 
     strings = []
 
@@ -37,18 +42,25 @@ def main():
             # Ahora enviaremos un mensaje
             for s in make_list():
                 client.send(bytes(CODE_RECV_RM_STR + s, encoding=ENCODING))
+                curr[0] = CODE_RECV_RM_STR
+
                 # Ahora vamos a recibir lo que el servidor nos responda. Para esto vamos a utilizar el método recv, y vamos a colocar 1024, lo cual hace referencia al bufer; es decir, 1024 bytes
                 response_serv = str(client.recv(BUFFER_SIZE), encoding=ENCODING)
+                
                 print(response_serv)
 
             client.send(bytes(CODE_RECV_RM_STR_END, encoding=ENCODING))
+            curr[0] = CODE_RECV_RM_STR_END
+            gui.pause(DELAY_SECONDS)
+
 
             while True:
                 resp = str(client.recv(BUFFER_SIZE), encoding=ENCODING)
+                gui.pause(DELAY_SECONDS)
                 
                 if len(resp) > 0:
                     code = resp[0]
-
+                    curr[0] = code
                     if code == CODE_SEND_RESP_PROCESSED:
                         s = resp[1:]
                         strings.append(s)
@@ -73,26 +85,18 @@ def main():
         # Cerramos la conexión
 
         client.send(bytes(CODE_END, encoding=ENCODING))
+        curr[0] = CODE_END
 
         client.close()
 
-        
-
-        # lists = response_serv.split("-")
-        # even = lists[0].split(",")
-        # odd = lists[1].split(",")
-        
-        # even = [x for x in even if x != '']
-        # odd = [x for x in odd if x != '']
-
-        # print(even)
-        # print(odd)
-
-        # print(response_serv)
-        
-
+        input("Press [enter] to quit.")
+        gui.close()
+         
 
 
 
 if __name__ == "__main__":
+    # Genero el grafo
+    gui.start_animation(curr)
+    input("Press [enter] to continue.")
     main()
