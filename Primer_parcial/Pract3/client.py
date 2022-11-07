@@ -38,6 +38,8 @@ def main():
 
     tries = 1
     with open("./strings.txt", "wt+") as f:
+        even_file = open("./strings_even.txt", "wt+")
+        odds_file = open("./strings_odd.txt", "wt+")
         while tries:
             # Ahora enviaremos un mensaje
             for s in make_list():
@@ -76,10 +78,13 @@ def main():
         # print(strings[0])
         f.write("Even: \n")
         for i in even:
+            even_file.write(f"{i},")
             f.write(f"{i},")
         f.write("\nOdds\n")
         for i in odds:
+            odds_file.write(f"{i},")
             f.write(f"{i},")
+        
 
         print("Cliente Cerrando")
         # Cerramos la conexión
@@ -88,6 +93,8 @@ def main():
         curr[0] = CODE_END
 
         client.close()
+        even_file.close()
+        odds_file.close()
 
         input("Press [enter] to quit.")
         gui.close()

@@ -2,7 +2,8 @@ import socket
 from common import *
 import common
 from automata import is_even
-
+from multiprocessing import Process
+import trtl
 
 def process_conn(conn):
     odds = []
@@ -66,7 +67,12 @@ def main():
     # Ahora establezco la cantidad de peticiones que puede manejar en cola nuestro socket
     server.listen(1)
 
+    p = Process(target=trtl.start)
+    p.start()
+    print("Turtle started")
+
     # Una vez establecida la conexión y que hayamos definido la cantidad de conexiones que puedan estar en cola, se establece un ciclo infinito
+    print("Server starting")
     while True:
         # Dentro de este ciclo, vamos a aceptar las peticiones de los clientes
         # Esta línea nos va a retornar dos valores: 1.- conexión, 2.- dirección
