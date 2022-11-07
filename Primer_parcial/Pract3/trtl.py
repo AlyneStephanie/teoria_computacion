@@ -1,7 +1,7 @@
 from turtle import Screen, Turtle
 from random import randint
 
-WIDTH, HEIGHT = 1800, 900
+WIDTH, HEIGHT = 1000, 900
 CURSOR_SIZE = 20
 
 screen = None
@@ -12,7 +12,7 @@ def start():
     global screen
     global turtle
 
-    pos_ini_x = -750
+    pos_ini_x = -400
     pos_ini_y = 250
 
     screen = Screen()
@@ -124,6 +124,31 @@ def start():
     turtle.pendown()
     turtle.write("Acknowledgment", move=False, align='left', font=('Arial', 11, 'normal'))
 
+    # Cuadro del autómata de la paridad
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 50, pos_ini_y - 195)
+    turtle.pendown()
+    turtle.setheading(0)
+    turtle.forward(750)
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 50, pos_ini_y - 195)
+    turtle.pendown()
+    turtle.setheading(270)
+    turtle.forward(470)
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 800, pos_ini_y - 665)
+    turtle.pendown()
+    turtle.setheading(90)
+    turtle.forward(470)
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 800, pos_ini_y - 665)
+    turtle.pendown()
+    turtle.setheading(180)
+    turtle.forward(750)
+
     # Etiqueta Start del Autómata de la paridad
     turtle.penup()
     turtle.setpos(pos_ini_x + 150, pos_ini_y - 307)
@@ -138,23 +163,25 @@ def start():
     turtle.forward(50)
     turtle.dot(8, "black")
 
-    # Círculo del primer estado
+    # Círculo del q0 del autómata de la paridad
     turtle.penup()
     turtle.setpos(pos_ini_x + 280, pos_ini_y - 340)
     turtle.pendown()
     turtle.circle(40)
 
+    # Círculo interno del q0 del autómata de la paridad
     turtle.penup()
     turtle.setpos(pos_ini_x + 280, pos_ini_y - 330)
     turtle.pendown()
     turtle.circle(30)
 
+    # Etiqueta de q0
     turtle.penup()
     turtle.setpos(pos_ini_x + 275, pos_ini_y - 307)
     turtle.pendown()
     turtle.write("q0", move=False, align='left', font=('Arial', 11, 'normal'))
     
-    # Arcos
+    # Arcos de q0 a q1 
     turtle.penup()
     turtle.setheading(0)
     turtle.setpos(pos_ini_x + 417, pos_ini_y - 220)
@@ -167,7 +194,7 @@ def start():
     turtle.pendown()
     turtle.circle(-120, -60)
 
-
+    # Arcos de q1 a q0
     turtle.penup()
     turtle.setheading(0)
     turtle.setpos(pos_ini_x + 417, pos_ini_y - 380)
@@ -180,14 +207,14 @@ def start():
     turtle.pendown()
     turtle.circle(120, -60)
 
-
+    # cabeza de flecha de q1 a q0
     turtle.penup()
     turtle.setheading(0)
     turtle.setpos(pos_ini_x + 314, pos_ini_y - 320)
     turtle.pendown()
     turtle.dot(8, "black")
 
-
+    # cabeza de flecha de q0 a q1
     turtle.penup()
     turtle.setheading(0)
     turtle.setpos(pos_ini_x + 520, pos_ini_y - 280)
@@ -195,25 +222,168 @@ def start():
     turtle.dot(8, "black")
 
 
-
+    # Círculo del estado q1
     turtle.penup()
     turtle.setheading(0)
     turtle.setpos(pos_ini_x + 557, pos_ini_y - 340)
     turtle.pendown()
     turtle.circle(40)
     
+    # Etiqueta del estado q1
     turtle.penup()
     turtle.setpos(pos_ini_x + 552, pos_ini_y - 307)
     turtle.pendown()
     turtle.write("q1", move=False, align='left', font=('Arial', 11, 'normal'))
 
-    # turtle.penup()
-    # turtle.setpos(pos_ini_x + 154, pos_ini_y)
-    # turtle.pendown()
-    # turtle.circle(50)
+
+    # --------------------
+
+    
+    # Círculo del q3 del autómata de la paridad
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 280, pos_ini_y - 600)
+    turtle.pendown()
+    turtle.circle(40)
+
+    # Etiqueta de q3
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 275, pos_ini_y - 567)
+    turtle.pendown()
+    turtle.write("q2", move=False, align='left', font=('Arial', 11, 'normal'))
+    
+    # Arcos de q2 a q3 
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 417, pos_ini_y - 480)
+    turtle.pendown()
+    turtle.circle(-120, 60)
 
     turtle.penup()
-    turtle.setpos(0,0)
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 417, pos_ini_y - 480)
+    turtle.pendown()
+    turtle.circle(-120, -60)
+
+    # Arcos de q3 a q2
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 417, pos_ini_y - 640)
+    turtle.pendown()
+    turtle.circle(120, 60)
+
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 417, pos_ini_y - 640)
+    turtle.pendown()
+    turtle.circle(120, -60)
+
+    # cabeza de flecha de q2 a q3
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 314, pos_ini_y - 580)
+    turtle.pendown()
+    turtle.dot(8, "black")
+
+    # cabeza de flecha de q3 a q2
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 520, pos_ini_y - 540)
+    turtle.pendown()
+    turtle.dot(8, "black")
+
+
+    # Círculo del estado q3
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 557, pos_ini_y - 600)
+    turtle.pendown()
+    turtle.circle(40)
+    
+    # Etiqueta del estado q3
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 552, pos_ini_y - 567)
+    turtle.pendown()
+    turtle.write("q3", move=False, align='left', font=('Arial', 11, 'normal'))
+
+
+    # --------------------
+
+    # Arcos de q3 a q2 
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 595, pos_ini_y - 560)
+    turtle.pendown()
+    turtle.circle(130, 180)
+
+    # Flecha de q0 hacia q2
+    turtle.penup()
+    turtle.setheading(270)
+    turtle.setpos(pos_ini_x + 280, pos_ini_y - 340)
+    turtle.pendown()
+    turtle.forward(180)
+    turtle.dot(8, "black")
+
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.setpos(pos_ini_x + 243, pos_ini_y - 300)
+    turtle.pendown()
+    turtle.circle(-130, -180)
+
+    # Flecha de q1 hacia q3
+    turtle.penup()
+    turtle.setheading(270)
+    turtle.setpos(pos_ini_x + 552, pos_ini_y - 340)
+    turtle.pendown()
+    turtle.dot(8, "black")
+    turtle.forward(180)
+
+    # Etiquetas 1's
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 413, pos_ini_y - 217)
+    turtle.pendown()
+    turtle.write("1", move=False, align='left', font=('Arial', 11, 'normal'))
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 413, pos_ini_y - 377)
+    turtle.pendown()
+    turtle.write("1", move=False, align='left', font=('Arial', 11, 'normal'))
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 413, pos_ini_y - 477)
+    turtle.pendown()
+    turtle.write("1", move=False, align='left', font=('Arial', 11, 'normal'))
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 413, pos_ini_y - 637)
+    turtle.pendown()
+    turtle.write("1", move=False, align='left', font=('Arial', 11, 'normal'))
+
+
+    # Etiquetas 0's
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 104, pos_ini_y - 433)
+    turtle.pendown()
+    turtle.write("0", move=False, align='left', font=('Arial', 11, 'normal'))
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 270, pos_ini_y - 433)
+    turtle.pendown()
+    turtle.write("0", move=False, align='left', font=('Arial', 11, 'normal'))
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 542, pos_ini_y - 433)
+    turtle.pendown()
+    turtle.write("0", move=False, align='left', font=('Arial', 11, 'normal'))
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 713, pos_ini_y - 433)
+    turtle.pendown()
+    turtle.write("0", move=False, align='left', font=('Arial', 11, 'normal'))
+
+    # ---------------------------
+
+    turtle.penup()
+    turtle.setpos(pos_ini_x + 300, pos_ini_y - 180)
     screen.mainloop()
 
 def stop():
