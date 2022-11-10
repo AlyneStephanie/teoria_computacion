@@ -10,7 +10,7 @@ def main():
         accumulated = ""
         strings_64_bits = []
         num_bits = 64
-        with open("C:/Users/bigbo/OneDrive/Escritorio/resultados/combinaciones.txt", "wt+") as f:
+        with open("combinaciones.txt", "wt+") as f:
             k = int(input("Ingresa m:\nAl aparecer, cierra la imagen para continuar\n"))
             f.write("{\n")
             for i in range(1, k+1):
